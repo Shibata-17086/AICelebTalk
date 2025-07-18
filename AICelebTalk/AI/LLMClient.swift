@@ -15,7 +15,7 @@ class LLMClient {
         webSocketTask?.send(message) { error in
             if let error = error {
                 print("Send error: \(error)")
-                completion(nil)
+                self.fallbackToMistral(prompt: prompt, completion: completion)
                 return
             }
             self.receive(completion: completion)
@@ -40,5 +40,18 @@ class LLMClient {
     
     func disconnect() {
         webSocketTask?.cancel(with: .goingAway, reason: nil)
+    }
+    
+    // OpenAI Moderation APIで安全性チェック（雛形）
+    func moderate(text: String, completion: @escaping (Bool) -> Void) {
+        // 本来はAPIリクエスト。ここでは仮実装。
+        let isSafe = !(text.contains("hate") || text.contains("self-harm") || text.contains("sexual"))
+        completion(isSafe)
+    }
+    
+    // Mistral-7B-Instruct（ollama）へのフォールバック雛形
+    private func fallbackToMistral(prompt: String, completion: @escaping (String?) -> Void) {
+        // 本来はollamaサーバへリクエスト。ここでは仮実装。
+        completion("[Mistral応答] " + prompt)
     }
 }

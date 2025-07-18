@@ -1,6 +1,6 @@
 import Foundation
 
-struct SessionLog: Identifiable {
+struct SessionLog: Identifiable, Codable {
     let id: String // session_id
     let userAId: String
     let userBId: String
@@ -9,13 +9,13 @@ struct SessionLog: Identifiable {
     var replayPublic: Bool
     var status: Status
     
-    enum Status: Int {
+    enum Status: Int, Codable {
         case active = 0, closed = 1
     }
 }
 
-struct Turn {
-    enum Speaker: Int {
+struct Turn: Codable {
+    enum Speaker: Int, Codable {
         case agentA = 0, agentB = 1
     }
     let speaker: Speaker
@@ -24,6 +24,6 @@ struct Turn {
     let offset: Float // seconds
 }
 
-enum Emotion: Int {
+enum Emotion: Int, Codable {
     case neutral = 0, joy = 1, sad = 2, anger = 3, surprise = 4
 }
