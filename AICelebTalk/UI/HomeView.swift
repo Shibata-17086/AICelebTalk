@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject private var scannerVM = ProximityScannerViewModel()
+    @StateObject private var sessionManager = SessionManager()
     
     var body: some View {
         VStack {
@@ -9,12 +10,20 @@ struct HomeView: View {
                 .font(.title)
                 .padding()
             List(scannerVM.detectedIDs, id: \ .self) { id in
-                Text("Ephemeral ID: \(id)")
+                HStack {
+                    Text("Ephemeral ID: \(id)")
+                    Spacer()
+                    Button("Connect") {
+                        sessionManager.startSession(with: id)
+                    }
+                }
             }
             Button(scannerVM.isScanning ? "Stop Scan" : "Start Scan") {
                 scannerVM.toggleScan()
             }
             .padding()
+            Text("Session State: \(String(describing: sessionManager.state))")
+                .padding()
         }
     }
 }

@@ -1,5 +1,7 @@
 import Foundation
 
 class PromptBuilder {
-    // LLM用プロンプト生成の雛形
+    func buildPrompt(system: String, persona: String, partnerProfile: String, safety: String) -> String {
+        return "SYSTEM: \(system)\nPERSONA: \(persona)\nPARTNER: \(partnerProfile)\nSAFETY: \(safety)"
+    }
 }
